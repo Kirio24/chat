@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Niña Hermosa ❤️</title>
+    <!-- FUENTE CORREGIDA: Ahora sí importa Quicksand y Dancing Script desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ff4d6d;
+            --secondary-color: #ff85a1;
+            --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffb3c1 100%);
+            --chat-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Cambiado a hidden para que los corazones no estiren la pantalla */
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Encabezado Principal */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #c9184a;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header p {
+            color: #590d22;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        /* Contenedor Fijo del Chat */
+        .chat-container {
+            width: 100%;
+            max-width: 450px;
+            height: 550px;
+            background: var(--chat-bg);
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(255, 77, 109, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out;
+            z-index: 10;
+        }
+
+        /* Caja donde se renderizan los mensajes */
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        /* Estilo base para las burbujas de mensaje */
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-size: 1rem;
+            line-height: 1.4;
+            animation: scaleIn 0.3s ease-out;
+            word-wrap: break-word;
+            white-space: pre-line;
+        }
+
+        /* Estilo de la burbuja del bot */
+        .message.bot {
+            background-color: white;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* Estilo de la burbuja de ella */
+        .message.user {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            box-shadow: -2px 4px 10px rgba(255, 77, 109, 0.2);
+        }
+
+        /* Caja de entrada inferior */
+        .chat-input-area {
+            padding: 15px;
+            background: white;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #ffe5ec;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            border: 2px solid #ffccd5;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(255, 77, 109, 0.2);
+        }
+
+        .chat-input-area button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .chat-input-area button:hover {
+            background: #e03a5c;
+            transform: scale(1.05);
+        }
+
+        /* Elementos dinámicos de corazones voladores */
+        .heart {
+            position: absolute;
+            color: var(--primary-color);
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 1;
+            bottom: -50px;
+            animation: floatHearts 4s linear forwards;
+        }
+
+        /* Keyframes de Animaciones CSS */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.3);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Para Mi Persona Favorita</h1>
+        <p>Escribe cómo te sientes hoy o pídeme un poema... ✨</p>
+    </header>
+
+    <div class="chat-container">
+        <div class="chat-box" id="chatBox">
+            <div class="message bot">¡Hola, mi reina! 💕 Aquí estoy listo para escucharte, consentirte o dedicarte mis mejores versos. ¿De qué tienes ganas hoy?</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Escríbeme algo aquí..." autocomplete="off">
+            <button onclick="enviarMensaje()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const respuestasRomanticas = {
+            cariño: [
+                "¡Hola, mi niña hermosa! Tu sola presencia me alegra la existencia. ❤️",
+                "Cada vez que leo un mensaje tuyo, se me escapa una sonrisa. 😍",
+                "Hola, amor de mi vida. Espero que estés teniendo un día tan maravilloso como tú. ✨"
+            ],
+            poemas: [
+                "Si supieras que tus ojos son mi guía,\ny tu sonrisa el motor de mi alegría.\nNo hay distancia que apague este querer,\nporque en tu amor encontré mi amanecer. 🌹",
+                "No busco estrellas en el cielo azul,\nni tesoros ocultos en el mar profundo,\nporque la luz que ilumina mi mundo\neres simplemente tú. ✨",
+                "A veces las palabras se quedan cortas,\na veces el tiempo pasa sin avisar,\npero lo único que tengo claro,\nes que toda la vida te voy a amar. 💞"
+            ],
+            apoyo: [
+                "Sé que estás cansada, mi amor. Has trabajado duro hoy y estoy increíblemente orgulloso de ti. Descansa, te lo mereces muchísimo. 🛌💕",
+                "Si el día se pone gris, recuerda que yo estoy aquí para llenarlo de colores contigo. Todo va a estar bien. 🌤️",
+                "Respira profundo, hermosa. Eres la mujer más fuerte que conozco y puedes con esto y más. Te mando un abrazo gigante. 🤗❤️"
+            ],
+            consuelo: [
+                "Me rompe el corazón saber que estás triste. Ojalá pudiera estar ahí ahora mismo para abrazarte fuerte y no soltarte. 😔❤️",
+                "No olvides que en mis brazos siempre tendrás un refugio seguro. Mañana será un día mejor, mi cielo. 🌟",
+                "Tu sonrisa es mi parte favorita del mundo entero, así que haré lo que sea necesario para devolvértela. Te amo. 💖"
+            ],
+            generales: [
+                "¡Buena pregunta, mi amor! La verdad es que no tengo todas las respuestas del mundo, pero sí tengo todo el amor para darte. 👑",
+                "Mmm... déjame pensarlo un segundo mientras me pierdo mirando tus hermosos ojos en mi mente... 🥰",
+                "Cualquier conversación contigo es automáticamente mi momento favorito del día. Te adoro. ✨"
+            ],
+            secreto: [
+                "¡¡¡Felicidades!!! 🕵️‍♂️💘 Has desbloqueado el mayor secreto de este código: El programador que diseñó esta pantalla está locamente enamorado de ti y no deja de pensar en tu sonrisa."
+            ]
+        };
+
+        // LÓGICA DE JAVASCRIPT COMPLETADA Y REPARADA
+        function obtenerElementoAleatorio(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function obtenerRespuestaRomantica(mensaje) {
+            const texto = mensaje.toLowerCase().trim();
+
+            if (texto.includes('secreto') || texto.includes('contraseña')) {
+                return obtenerElementoAleatorio(respuestasRomanticas.secreto);
+            }
+            if (texto.includes('poema') || texto.includes('poesia') || texto.includes('verso') || texto.includes('poesía')) {
+                return obtenerElementoAleatorio(respuestasRomanticas.poemas);
+            }
+            if (texto.includes('cansada') || texto.includes('sueño') || texto.includes('estresada') || texto.includes('trabajo') || texto.includes('sueñito')) {
+                return obtenerElementoAleatorio(respuestasRomanticas.apoyo);
+            }
+            if (texto.includes('triste') || texto.includes('mal dia') || texto.includes('llorar') || texto.includes('asustada') || texto.includes('mal día')) {
+                return obtenerElementoAleatorio(respuestasRomanticas.consuelo);
+            }
+            if (texto.includes('hola') || texto.includes('amor') || texto.includes('te quiero') || texto.includes('te amo')) {
+                return obtenerElementoAleatorio(respuestasRomanticas.cariño);
+            }
+            
+            return obtenerElementoAleatorio(respuestasRomanticas.generales);
+        }
+
+        function enviarMensaje() {
+            const input = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const mensaje = input.value.trim();
+
+            if (mensaje === "") return;
+
+            // 1. Añadir mensaje del usuario
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.textContent = mensaje;
+            chatBox.appendChild(userDiv);
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 2. Respuesta del Bot con un pequeño retraso natural
+            setTimeout(() => {
+                const botDiv = document.createElement('div');
+                botDiv.className = 'message bot';
+                botDiv.textContent = obtenerRespuestaRomantica(mensaje);
+                chatBox.appendChild(botDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        // Permitir enviar el mensaje también presionando la tecla "Enter"
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                enviarMensaje();
+            }
+        });
+
+        // FUNCIÓN AGREGADA: Generador automático de corazones flotantes en el fondo
+        function crearCorazones() {
+            const listaCorazones = ['❤️', '💖', '💕', '✨', '🌸'];
+            setInterval(() => {
+                const corazon = document.createElement('div');
+                corazon.className = 'heart';
+                corazon.innerText = obtenerElementoAleatorio(listaCorazones);
+                corazon.style.left = Math.random() * 100 + 'vw';
+                corazon.style.animationDuration = (Math.random() * 2 + 3) + 's'; // Entre 3 y 5 segundos
+                document.body.appendChild(corazon);
+
+                setTimeout(() => {
+                    corazon.remove();
+                }, 4000);
+            }, 500);
+        }
+
+        // Activar los corazones al cargar la página
+        crearCorazones();
+    </script>
+</body>
+</html>
